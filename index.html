@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кабинет кружка</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="appEyebrow">Кабинет кружка</p>
+        <h1 id="appTitle">Посещаемость, темы занятий и домашние задания</h1>
+        <p class="lead" id="appLead">Удобный рабочий кабинет для методиста, детей и родителей.</p>
+      </div>
+      <div id="teacherHeaderActions" class="header-actions">
+        <button id="addLessonBtn" class="btn btn-primary" type="button">Новое занятие</button>
+        <button id="exportBtn" class="btn btn-secondary" type="button">Экспорт журнала</button>
+      </div>
+    </header>
+
+    <div id="teacherApp" class="app-layout">
+      <aside class="card sidebar">
+        <section class="section">
+          <div class="section-head">
+            <h2>Группа</h2>
+          </div>
+          <form id="groupForm" class="stack">
+            <label>
+              Название группы
+              <input id="groupName" type="text" placeholder="Например: Вокальная студия">
+            </label>
+            <label>
+              Педагог или руководитель
+              <input id="teacherName" type="text" placeholder="Например: Елена Сергеевна">
+            </label>
+            <button class="btn btn-secondary" type="submit">Сохранить данные группы</button>
+          </form>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Дети и родители</h2>
+            <span id="studentCount" class="pill"></span>
+          </div>
+          <div id="studentList" class="student-list"></div>
+          <form id="studentForm" class="stack subtle-box">
+            <input id="studentName" type="text" placeholder="Имя и фамилия ребенка">
+            <input id="parentName" type="text" placeholder="Имя родителя">
+            <input id="parentContact" type="text" placeholder="Телефон или чат">
+            <button class="btn btn-primary" type="submit">Добавить ребенка</button>
+          </form>
+        </section>
+      </aside>
+
+      <main class="main-column">
+        <section class="card">
+          <div class="section-head">
+            <h2>План работы</h2>
+            <span id="planCount" class="pill"></span>
+          </div>
+          <div id="planList" class="plan-list"></div>
+          <form id="planForm" class="stack subtle-box">
+            <input id="planContent" type="text" placeholder="Содержание мероприятия или задачи">
+            <div class="two-col">
+              <input id="planDate" type="date">
+              <input id="planResponsible" type="text" placeholder="Ответственные лица">
+            </div>
+            <button class="btn btn-primary" type="submit">Добавить в план</button>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <h2>Занятия</h2>
+            <span id="lessonCount" class="pill"></span>
+          </div>
+          <div id="lessonTabs" class="lesson-tabs"></div>
+        </section>
+
+        <section id="emptyState" class="card empty-card">
+          <h2>Журнал почти готов</h2>
+          <p>Добавьте детей и создайте первое занятие. После этого можно будет отмечать посещаемость, указывать тему и домашнее задание, а затем отправлять родителям личные ссылки.</p>
+        </section>
+
+        <section id="lessonWorkspace" class="card hidden">
+          <div class="workspace-head">
+            <div>
+              <p id="lessonGroupMeta" class="meta-line"></p>
+              <h2 id="workspaceTitle"></h2>
+            </div>
+            <button id="deleteLessonBtn" class="btn btn-danger" type="button">Удалить занятие</button>
+          </div>
+
+          <form id="lessonForm" class="stack">
+            <div class="two-col">
+              <label>
+                Дата
+                <input id="lessonDate" type="date">
+              </label>
+              <label>
+                Время
+                <input id="lessonTime" type="time">
+              </label>
+            </div>
+
+            <label>
+              Тема занятия
+              <input id="lessonTopic" type="text" placeholder="Например: Подготовка номера к концерту">
+            </label>
+
+            <label>
+              Что делали на занятии
+              <textarea id="lessonSummary" rows="3" placeholder="Короткое описание для родителей и детей"></textarea>
+            </label>
+
+            <label>
+              Домашнее задание
+              <textarea id="lessonHomework" rows="4" placeholder="Что ребенок должен сделать дома"></textarea>
+            </label>
+          </form>
+
+          <div class="workspace-grid">
+            <section class="subcard">
+              <div class="section-head">
+                <h3>Посещаемость</h3>
+                <span id="attendanceSummary" class="pill"></span>
+              </div>
+              <div id="attendanceList" class="attendance-list"></div>
+            </section>
+
+            <section class="subcard">
+              <div class="section-head">
+                <h3>Личные ссылки</h3>
+              </div>
+              <label>
+                Выберите ребенка
+                <select id="shareStudentSelect"></select>
+              </label>
+              <div class="share-buttons">
+                <button id="copyParentLinkBtn" class="btn btn-secondary" type="button">Скопировать ссылку для родителя</button>
+                <button id="copyStudentLinkBtn" class="btn btn-secondary" type="button">Скопировать ссылку для ребенка</button>
+                <button id="shareWhatsAppBtn" class="btn btn-primary" type="button">Отправить родителю в WhatsApp</button>
+              </div>
+              <p class="hint">Эти ссылки удобно открываются на телефоне. После изменений в журнале ссылку лучше скопировать или отправить заново.</p>
+              <div id="shareStatus" class="status-box">Пока ссылка не скопирована.</div>
+            </section>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <h2>Учёт посещаемости</h2>
+          </div>
+          <div id="attendanceJournal" class="attendance-journal"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <h2>Замечания проверяющих</h2>
+          </div>
+          <textarea id="remarksInput" rows="5" placeholder="Замечания, рекомендации, выводы"></textarea>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <h2>Краткий годовой отчёт</h2>
+          </div>
+          <textarea id="annualReportInput" rows="7" placeholder="Итоги работы кружка за учебный год"></textarea>
+        </section>
+      </main>
+    </div>
+
+    <div id="viewerApp" class="viewer-shell hidden">
+      <section class="viewer-hero">
+        <p class="eyebrow" id="viewerEyebrow"></p>
+        <h2 id="viewerStudentName"></h2>
+        <p id="viewerSummary" class="lead"></p>
+        <div id="viewerActions" class="viewer-actions"></div>
+      </section>
+
+      <section class="viewer-grid">
+        <div class="card viewer-card">
+          <div class="section-head">
+            <h3>Посещаемость</h3>
+            <span id="viewerAttendanceRate" class="pill"></span>
+          </div>
+          <div id="viewerAttendanceStats" class="stats-grid"></div>
+        </div>
+
+        <div class="card viewer-card">
+          <div class="section-head">
+            <h3>Последнее домашнее задание</h3>
+          </div>
+          <div id="viewerLatestHomework" class="info-block"></div>
+        </div>
+      </section>
+
+      <section class="card viewer-card">
+        <div class="section-head">
+          <h3>История занятий</h3>
+        </div>
+        <div id="viewerLessons" class="viewer-lessons"></div>
+      </section>
+    </div>
+  </div>
+
+  <template id="lessonTabTemplate">
+    <button class="lesson-tab" type="button"></button>
+  </template>
+
+  <template id="attendanceItemTemplate">
+    <label class="attendance-item">
+      <input type="checkbox">
+      <div>
+        <strong class="attendance-name"></strong>
+        <small class="attendance-extra"></small>
+      </div>
+    </label>
+  </template>
+
+  <template id="studentCardTemplate">
+    <div class="student-card">
+      <div>
+        <strong class="student-name"></strong>
+        <small class="student-meta"></small>
+      </div>
+      <button class="mini-link" type="button">Удалить</button>
+    </div>
+  </template>
+
+  <template id="viewerLessonTemplate">
+    <article class="viewer-lesson">
+      <div class="viewer-lesson-head">
+        <div>
+          <p class="viewer-date"></p>
+          <h4 class="viewer-topic"></h4>
+        </div>
+        <span class="viewer-badge"></span>
+      </div>
+      <div class="viewer-content">
+        <p class="viewer-summary"></p>
+        <div class="homework-box"></div>
+      </div>
+    </article>
+  </template>
+
+  <template id="planItemTemplate">
+    <article class="plan-item">
+      <div>
+        <strong class="plan-item-content"></strong>
+        <small class="plan-item-meta"></small>
+      </div>
+      <button class="mini-link" type="button">Удалить</button>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
